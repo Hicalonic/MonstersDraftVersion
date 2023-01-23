@@ -19,19 +19,22 @@ public abstract class Monster {
     private int health;
     private boolean isAlive = true;
 
+    private static int monsterCounter;
+
     public Monster(MonsterList typeOfMonster, int damage, int health) {
         this.typeOfMonster = typeOfMonster;
         this.damage = damage;
         this.health = health;
+        monsterCounter++;
     }
 
-    public int attack() {
-        return this.damage;
+    public abstract void attack(Monster monster);
+
+    public boolean isAlive() {
+        return isAlive;
     }
 
-    public void  defend() {
-        this.health -= attack();
-    }
+
 
     public int getDamage() {
         return damage;
@@ -43,6 +46,8 @@ public abstract class Monster {
 
     public void loseHealth(int hitPoints) {
         this.health -= hitPoints;
+        if(this.health<=0)
+            this.health=0;
     }
     public void recoverHealth(int hitPoints) {
         this.health += hitPoints;
@@ -50,6 +55,10 @@ public abstract class Monster {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 
     @Override

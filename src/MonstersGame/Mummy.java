@@ -12,20 +12,18 @@ public class Mummy extends Monster {
         this.attackCounter = attackCounter;
     }
 
+
     @Override
-    public int attack() {
-        if (this.attackCounter > 2) {
-            thirdAttack();
+    public void attack(Monster defender) {
+        if(attackCounter > 2) {
+            loseHealth(thirdAttackPenalty);
+            attackCounter = 0;
+            System.out.println("Mummy missed attack, lost 10 HP leaving her with " + this.getHealth());
+            System.out.println("--".repeat(30));
         }
-        setDamage(10);
+        defender.loseHealth(this.getDamage());
         attackCounter++;
-        return super.attack();
+        System.out.println("Mummy successfully attacked " + defender.typeOfMonster + " dealing " + this.getDamage() + " leaving him with " + defender.getHealth());
+        System.out.println("--".repeat(30));
     }
-
-    private void thirdAttack(){
-        loseHealth(thirdAttackPenalty);
-        setDamage(0);
-        this.attackCounter = 0;
-    }
-
 }

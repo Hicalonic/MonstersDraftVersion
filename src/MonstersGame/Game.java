@@ -1,84 +1,130 @@
 package MonstersGame;
 
 public class Game {
-    public Player p1, p2;
-    public Monster monster;
+    public Player attacker, defender;
+    public Monster pickedCard;
     private int numberOfMonsters;
-    private int numOfMonstersAlive;
-    private boolean gotWinner = false;
+    private boolean gotWinner;
 
-    public Game() {
-        this.p1 = new Player("player1");
-        this.p2 = new Player("player2");
+    public Game(Player p1, Player p2) {
+        this.attacker = p1;
+        this.defender = p2;
+        this.gotWinner = false;
+        this.numberOfMonsters = 0;
     }
 
+    public int getNumberOfMonsters() {
+        return numberOfMonsters;
+    }
 
-    public void verifyHandSize(){
-        int p1HandSize = p1.chooseHandSize();
-        int p2HandSize = p2.chooseHandSize();
+    public void setNumberOfMonsters(int numberOfMonsters) {
+        this.numberOfMonsters = numberOfMonsters;
+    }
+
+    public void verifyHandSize() {
+        int p1HandSize = attacker.chooseHandSize();
+        int p2HandSize = defender.chooseHandSize();
+        System.out.println("Player 1 choose to play with " + p1HandSize + " monsters!");
+        System.out.println("Player 2 choose to play with " + p2HandSize + " monsters!");
         if (p1HandSize != p2HandSize) {
             verifyHandSize();
         } else {
-           this.numberOfMonsters = p1HandSize;
-           p1.initializePlayersHand(this.numberOfMonsters);
-           p2.initializePlayersHand(this.numberOfMonsters);
+            setNumberOfMonsters(p1HandSize);
+            attacker.initializePlayersHand(getNumberOfMonsters());
+            defender.initializePlayersHand(getNumberOfMonsters());
         }
     }
 
-    public void die(Player p) {
-        numOfMonstersAlive = 2;
-
-        for (int i = 0; i < numOfMonstersAlive; i++) {
-            if (p.playerCards[i].getHealth() < 1) {
-                p.playerCards[numOfMonstersAlive] = p.playerCards[i];
-                p.playerCards[numOfMonstersAlive] = null;
-//                numOfMonstersAlive--;
+    public void updateMonsterState(Player player) {
+        for (int i = 0; i < player.playerCards.length; i++) {
+            if (player.playerCards[i].getHealth() <= 0) {
+                player.playerCards[i].setAlive(false);
             }
         }
     }
 
-//    public void runGame() {
-//            p1Choice = p1.playerChoice();
-//            p2Choice = p2.playerChoice();
-//            play();
+    public boolean allMonsterDead(Player player){
+        for (Monster playerCard : player.playerCards) {
+            if(playerCard.isAlive()== true)
+                return false;
+        }
+        return true;
+    }
 
     public void play() {
-        while (gotWinner == false) {
-            if (checkWinner())
-            break;
-            if (chooseFirstPlayer() == 1) {
-                pickCardToFight(p1).attack();
-                System.out.println(pickCardToFight(p1).typeOfMonster + " " + pickCardToFight(p1).getHealth());
-                pickCardToFight(p2).defend();
-                System.out.println(pickCardToFight(p2).typeOfMonster + " " + pickCardToFight(p2).getHealth());
-            } else {
-                pickCardToFight(p2).attack();
-                System.out.println(pickCardToFight(p2).typeOfMonster + " " + pickCardToFight(p2).getHealth());
-                pickCardToFight(p1).defend();
-                System.out.println(pickCardToFight(p1).typeOfMonster + " " + pickCardToFight(p1).getHealth());
-            }
+
+        randomizeFirstPlayer();
+        while (allMonsterDead(this.attacker) == false && allMonsterDead(this.defender) == false) {
+            pickCardToFight(this.attacker).attack(pickCardToFight(this.defender));
+            updateMonsterState(this.defender);
+
+            swapPlayers();
+        }
+        checkWinner(this.attacker);
+        checkWinner(this.defender);
+    }
+
+    private void randomizeFirstPlayer() {
+        if(chooseFirstPlayer() == 1){
+            swapPlayers();
         }
     }
 
-    private boolean checkWinner(){
-        if (p1.playerCards[0] == null) {
-            System.out.println(p2.getName() + " wins");
-            gotWinner = true;
+    private void swapPlayers() {
+        Player swap=this.defender;
+        this.defender= this.attacker;
+        this.attacker= swap;
+    }
+
+    private boolean checkWinner(Player player) {
+        for (int i = 0; i < player.playerCards.length; i++) {
+            if (player.playerCards[i].isAlive() == true) {
+                return gotWinner;
+            }
         }
-        if (p2.playerCards[0] == null) {
-            System.out.println(p1.getName() + " wins");
-            gotWinner = true;
-        }
-        return gotWinner;
+        return gotWinner = true;
     }
     public int chooseFirstPlayer() {
         return (int) Math.floor(Math.random() * (2) + 1);
     }
 
-    private Monster pickCardToFight(Player p){
-        die(p);
-        int monsterIndex = (int) Math.ceil(Math.random() * (this.numOfMonstersAlive));
-        return p.playerCards[monsterIndex - 1];
-    }
+    private Monster pickCardToFight(Player p) {
+        int monsterIndex = (int) (Math.random() * (p.playerCards.length));
+//        for (Monster playerCard : p.playerCards) {
+//            if (playerCard.isAlive() == true) {
+//                if (p.playerCards[monsterIndex - 1].isAlive() == true) {
+//                }
+//            }
+//        }
+//        System.out.println(p.playerCards[monsterIndex-1].typeOfMonster + " Is still Alive");
+//        return p.playerCards[monsterIndex - 1];
 
+        while(!p.playerCards[monsterIndex].isAlive()){
+            monsterIndex = (int) (Math.random() * (p.playerCards.length));
+        }
+
+
+        return p.playerCards[monsterIndex];
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

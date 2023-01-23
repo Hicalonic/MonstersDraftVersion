@@ -1,6 +1,7 @@
 package MonstersGame;
 
 
+import java.util.Arrays;
 
 public class Player {
     private String name;
@@ -14,15 +15,13 @@ public class Player {
         return this.name;
     }
 
+    public void setPlayerCards(Monster[] newDeck) {
+        this.playerCards = newDeck;
+    }
+
     public void showHand(){
         for (int i = 0; i < playerCards.length; i++) {
         System.out.println(this.playerCards[i].toString());
-        }
-    }
-
-    public void getCards() {
-        for (int i = 0; i < this.playerCards.length; i++) {
-            this.playerCards[i] = monsterAttribution();
         }
     }
 
@@ -31,19 +30,13 @@ public class Player {
         getCards();
     }
 
-    public  int chooseHandSize(){
-        return 3; //(int) Math.ceil(Math.random() * 10 + 3);
+    public void getCards() {
+        for (int i = 0; i < this.playerCards.length; i++) {
+            this.playerCards[i] = monsterAttribution();
+        }
     }
 
-
-//    public void add() {
-//        if (this.numberOfMonsters < this.playerCards.length) {
-//
-//    }
-//            this.playerCards[this.numberOfMonsters] = monsterAttribution();
-//        }
-
-        private Monster monsterAttribution () {
+    private Monster monsterAttribution () {
         return switch (pickCard()) {
             case VAMPIRE:
                 yield new Vampire();
@@ -53,8 +46,8 @@ public class Player {
                 yield new Werewolf();
         };
     }
-        private Monster.MonsterList pickCard () {
-        switch (randomNumberToPickCard()) {
+    private Monster.MonsterList pickCard () {
+        switch (RandomNumber.randomNumber(1, 3)) {
             case 1:
                 return Monster.MonsterList.VAMPIRE;
             case 2:
@@ -65,10 +58,21 @@ public class Player {
                 return null;
         }
     }
+    public int randomNumberToPickCard () {
 
-
-        public int randomNumberToPickCard () {
         return (int) Math.floor(Math.random() * (3) + 1);
+    }
+
+    public  int chooseHandSize(){
+        return (int) Math.floor(Math.random() * 3 + 2);
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", playerCards=" + Arrays.toString(playerCards) +
+                '}';
     }
 }
 

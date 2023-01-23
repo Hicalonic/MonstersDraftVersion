@@ -8,14 +8,20 @@ public class Vampire extends Monster {
         super(VAMPIRE, 15, 80);
     }
 
-    @Override
-    public int attack() {
-        if (biteProbability()) {
-            recoverHealth(healthRecover);
-        }
-        return super.attack();
-    }
 
+    @Override
+    public void attack(Monster defender) {
+        if (biteProbability()) {
+            defender.loseHealth(this.getDamage());
+            System.out.println("Vampire successfully attacked " + defender.typeOfMonster + " dealing " + this.getDamage() + " leaving him with " + defender.getHealth());
+            recoverHealth(healthRecover);
+            System.out.println("Vampire has bitten " + defender.typeOfMonster + " and recovered " + healthRecover + " HP! Leaving himself with " + this.getHealth());
+            System.out.println("--".repeat(30));
+        }
+        defender.loseHealth(this.getDamage());
+        System.out.println("Vampire successfully attacked " + defender.typeOfMonster + " dealing " + this.getDamage() + " leaving him with " + defender.getHealth());
+        System.out.println("--".repeat(30));
+    }
 
     private boolean biteProbability(){
         if ((int) (Math.random() * 3 + 1) == 3) {
