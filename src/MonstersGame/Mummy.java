@@ -18,6 +18,8 @@ public class Mummy extends Monster {
         if(attackCounter > 2) {
             loseHealth(thirdAttackPenalty);
             attackCounter = 0;
+            if (getHealth() <= 0)
+                setAlive(false);
             System.out.println("Mummy missed attack, lost 10 HP leaving her with " + this.getHealth());
             System.out.println("--".repeat(30));
         }

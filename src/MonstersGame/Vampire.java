@@ -24,7 +24,7 @@ public class Vampire extends Monster {
     }
 
     private boolean biteProbability(){
-        if ((int) (Math.random() * 3 + 1) == 3) {
+        if (RandomNumber.randomNumber(1, 3) == 3) {
             return true;
         }
         return false;

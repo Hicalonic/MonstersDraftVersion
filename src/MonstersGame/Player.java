@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class Player {
     private String name;
-    public Monster[] playerCards;
+    private Monster[] playerCards;
 
     public Player(String name) {
         this.name = name;
@@ -15,14 +15,12 @@ public class Player {
         return this.name;
     }
 
-    public void setPlayerCards(Monster[] newDeck) {
-        this.playerCards = newDeck;
-    }
-
     public void showHand(){
+        System.out.println(this.getName() +  "'s hand");
         for (int i = 0; i < playerCards.length; i++) {
         System.out.println(this.playerCards[i].toString());
         }
+        System.out.println("-".repeat(50));
     }
 
     public void initializePlayersHand(int numberOfMonsters){
@@ -58,13 +56,13 @@ public class Player {
                 return null;
         }
     }
-    public int randomNumberToPickCard () {
-
-        return (int) Math.floor(Math.random() * (3) + 1);
-    }
 
     public  int chooseHandSize(){
-        return (int) Math.floor(Math.random() * 3 + 2);
+        return RandomNumber.randomNumber(2, 5);
+    }
+
+    public Monster[] getPlayerCards() {
+        return playerCards;
     }
 
     @Override

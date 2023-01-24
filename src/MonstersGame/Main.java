@@ -12,19 +12,19 @@ public class Main {
 
 
 
-        Player [] players = {new Player("test"), null, new Player("test2")};
-        Player [] newPlayers = new Player[players.length-1];
-
-        int freePosition=0;
-        for (Player p : players) {
-            if(p!=null){
-                newPlayers[freePosition]=p;
-                freePosition++;
-            }
-        }
-        for (Player newPlayer : newPlayers) {
-            System.out.println(newPlayer);
-        }
+//        Player [] players = {new Player("test"), null, new Player("test2")};
+//        Player [] newPlayers = new Player[players.length-1];
+//
+//        int freePosition=0;
+//        for (Player p : players) {
+//            if(p!=null){
+//                newPlayers[freePosition]=p;
+//                freePosition++;
+//            }
+//        }
+//        for (Player newPlayer : newPlayers) {
+//            System.out.println(newPlayer);
+//        }
     }
 
 }

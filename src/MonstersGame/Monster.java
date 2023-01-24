@@ -2,16 +2,11 @@ package MonstersGame;
 
 public abstract class Monster {
     public enum MonsterList {
-        VAMPIRE("VAMPIRE"), MUMMY("MUMMY"), WEREWOLF("WEREWOLF");
+        VAMPIRE, MUMMY, WEREWOLF;
 
-        public String name;
-        private MonsterList(String name) {
-            this.name = name;
+        private MonsterList() {
         }
 
-        public String getName() {
-            return name;
-        }
     }
 
     MonsterList typeOfMonster;
@@ -46,16 +41,13 @@ public abstract class Monster {
 
     public void loseHealth(int hitPoints) {
         this.health -= hitPoints;
-        if(this.health<=0)
-            this.health=0;
+        if(this.health <= 0)
+            this.health = 0;
     }
     public void recoverHealth(int hitPoints) {
         this.health += hitPoints;
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
 
     public void setAlive(boolean alive) {
         isAlive = alive;
@@ -63,10 +55,10 @@ public abstract class Monster {
 
     @Override
     public String toString() {
-        return "Monster{" +
-                "typeOfMonster=" + typeOfMonster +
-                ", damage=" + damage +
-                ", health=" + health +
-                '}';
+        return "Monster -->" +
+                typeOfMonster +
+                " *health* [" + health +
+                "] **isAlive** [" + isAlive +
+                "]";
     }
 }
