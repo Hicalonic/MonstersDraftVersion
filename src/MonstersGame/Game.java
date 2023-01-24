@@ -58,10 +58,10 @@ public class Game {
         while (allMonsterDead(this.attacker) == false && allMonsterDead(this.defender) == false) {
             pickCardToFight(this.attacker).attack(pickCardToFight(this.defender));
             updateMonsterState(this.defender);
-            generateObstacle();
-            updateMonsterState(this.defender);
             attacker.showHand();
             defender.showHand();
+            generateObstacle(defender);
+            updateMonsterState(this.defender);
             swapPlayers();
         }
         if (allMonsterDead(this.attacker) == true)
@@ -88,22 +88,29 @@ public class Game {
         }
         return p.getPlayerCards()[monsterIndex];
     }
-    private void generateObstacle() {
-        switch (RandomNumber.randomNumber(1,6)) {
-            case 1:
-                pickCardToFight(this.defender).loseHealth(witch.damage);
-                //System.out.println(witch + " attacked " + pickCardToFight(this.defender));
-                break;
-            case 2:
-                pickCardToFight(this.defender).loseHealth(fairy.damage);
-                //System.out.println(fairy + " attacked " + pickCardToFight(this.defender));
-                break;
-            case 3:
-                witch.loseHealth(pickCardToFight(this.attacker).damage);
-                //System.out.println( pickCardToFight(this.attacker) + " attacked " + witch);
-                break;
-            default:
-                break;
+    private void generateObstacle(Player player) {
+        if (allMonsterDead(player) == false) {
+            Monster luckyMonster = pickCardToFight(player);
+            switch (RandomNumber.randomNumber(1, 6)) {
+                case 1:
+                    if (witch.isAlive()) {
+                        pickCardToFight(player).loseHealth(witch.damage);
+                        System.out.println(witch.getName() + " attacked " + luckyMonster.typeOfMonster + " leaving him with " + luckyMonster.health + " HP.");
+                    }
+                        break;
+                case 2:
+                    pickCardToFight(player).loseHealth(fairy.damage);
+                    System.out.println(fairy.getName() + " attacked " + luckyMonster.typeOfMonster + " leaving him with " + luckyMonster.health + " HP.");
+                    break;
+                case 3:
+                    if (witch.isAlive()) {
+                        witch.loseHealth(pickCardToFight(player).damage);
+                        System.out.println(luckyMonster.typeOfMonster + " attacked " + witch.getName() + " leaving her with" + witch.getHealth() + " HP");
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
