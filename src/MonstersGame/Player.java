@@ -44,14 +44,14 @@ public class Player {
                 yield new Werewolf();
         };
     }
-    private Monster.MonsterList pickCard () {
+    private MonsterList pickCard () {
         switch (RandomNumber.randomNumber(1, 3)) {
             case 1:
-                return Monster.MonsterList.VAMPIRE;
+                return MonsterList.VAMPIRE;
             case 2:
-                return Monster.MonsterList.MUMMY;
+                return MonsterList.MUMMY;
             case 3:
-                return Monster.MonsterList.WEREWOLF;
+                return MonsterList.WEREWOLF;
             default:
                 return null;
         }

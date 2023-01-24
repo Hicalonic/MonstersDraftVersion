@@ -2,12 +2,16 @@ package MonstersGame;
 
 public class Game {
     public Player attacker, defender;
+    private Witch witch;
+    private Fairy fairy;
     private int numberOfMonsters;
 
     public Game(Player p1, Player p2) {
         this.attacker = p1;
         this.defender = p2;
         this.numberOfMonsters = 0;
+        this.witch = new Witch();
+        this.fairy = new Fairy();
     }
 
     public int getNumberOfMonsters() {
@@ -34,7 +38,7 @@ public class Game {
 
     public void updateMonsterState(Player player) {
         for (int i = 0; i < player.getPlayerCards().length; i++) {
-            if (player.getPlayerCards()[i].getHealth() <= 0) {
+            if (player.getPlayerCards()[i].health <= 0) {
                 player.getPlayerCards()[i].setAlive(false);
             }
         }
@@ -53,6 +57,8 @@ public class Game {
         randomizeFirstPlayer();
         while (allMonsterDead(this.attacker) == false && allMonsterDead(this.defender) == false) {
             pickCardToFight(this.attacker).attack(pickCardToFight(this.defender));
+            updateMonsterState(this.defender);
+            generateObstacle();
             updateMonsterState(this.defender);
             attacker.showHand();
             defender.showHand();
@@ -81,5 +87,23 @@ public class Game {
             monsterIndex = (int) (Math.random() * (p.getPlayerCards().length));
         }
         return p.getPlayerCards()[monsterIndex];
+    }
+    private void generateObstacle() {
+        switch (RandomNumber.randomNumber(1,6)) {
+            case 1:
+                pickCardToFight(this.defender).loseHealth(witch.damage);
+                //System.out.println(witch + " attacked " + pickCardToFight(this.defender));
+                break;
+            case 2:
+                pickCardToFight(this.defender).loseHealth(fairy.damage);
+                //System.out.println(fairy + " attacked " + pickCardToFight(this.defender));
+                break;
+            case 3:
+                witch.loseHealth(pickCardToFight(this.attacker).damage);
+                //System.out.println( pickCardToFight(this.attacker) + " attacked " + witch);
+                break;
+            default:
+                break;
+        }
     }
 }

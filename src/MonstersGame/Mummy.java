@@ -8,8 +8,9 @@ public class Mummy extends Monster {
 
 
     public Mummy() {
-        super(MUMMY, 10, 100);
+        super(MUMMY, MUMMY.getHealth());
         this.attackCounter = attackCounter;
+        this.damage = MUMMY.getDamage();
     }
 
 
@@ -18,14 +19,14 @@ public class Mummy extends Monster {
         if(attackCounter > 2) {
             loseHealth(thirdAttackPenalty);
             attackCounter = 0;
-            if (getHealth() <= 0)
+            if (health <= 0)
                 setAlive(false);
-            System.out.println("Mummy missed attack, lost 10 HP leaving her with " + this.getHealth());
+            System.out.println("Mummy missed attack, lost 10 HP leaving her with " + this.health);
             System.out.println("--".repeat(30));
         }
         defender.loseHealth(this.getDamage());
         attackCounter++;
-        System.out.println("Mummy successfully attacked " + defender.typeOfMonster + " dealing " + this.getDamage() + " leaving him with " + defender.getHealth());
+        System.out.println("Mummy successfully attacked " + defender.typeOfMonster + " dealing " + this.getDamage() + " leaving him with " + defender.health);
         System.out.println("--".repeat(30));
     }
 }
